@@ -1,7 +1,7 @@
 import sys
 import os
 import logging
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from config import DevelopmentConfig, TestingConfig, ProductionConfig  # Импорты конфигов
@@ -21,6 +21,27 @@ from core.blueprints.platform import platform_blueprint
 from core.blueprints.user import user_blueprint
 from routes import user
 from core.database.repository.user_repository import UserRepository
+
+app = Flask(__name__)
+logging.basicConfig(filename='C:\\app.log', level=logging.DEBUG)
+          
+@app.route('/auth/login', methods=['POST'])
+def login():
+    try:
+                  data = request.get_json()
+                  app.logger.debug('Received: %s', data)
+                  username = data.get('username')
+                  password = data.get('password')
+                  if username == 'test' and password == 'test':
+                    return {'status': 'success', 'message': 'Logged in'}, 200
+                    return {'status': 'error', 'message': 'Invalid credentials'}, 401
+    except Exception as e:
+                app.logger.error('Error: %s', str(e))
+                return {'status': 'error', 'message': 'Server error'}, 500
+          
+@app.route('/test')
+def test():
+            return 'OK'
 
 # Определение словаря конфигураций
 config = {
