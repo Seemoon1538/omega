@@ -22,7 +22,7 @@ from core.blueprints.user import user_blueprint
 from routes import user
 from core.database.repository.user_repository import UserRepository
 
-app = Flask(__name__)
+app = Flask('omega')
 logging.basicConfig(filename='C:\\app.log', level=logging.DEBUG)
           
 @app.route('/auth/login', methods=['POST'])
@@ -51,7 +51,7 @@ config = {
 }
 
 def create_app(config_name):
-    app = Flask(__name__)  # Исправлено: name → __name__
+    app = Flask('omega')  # Исправлено: name → __name__
     if config_name not in config:
         logging.error(f"Недопустимое имя конфигурации: {config_name}. Доступные: {list(config.keys())}")
         raise ValueError(f"Недопустимое имя конфигурации: {config_name}")
